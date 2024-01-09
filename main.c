@@ -1,7 +1,8 @@
 #include <stdio.h>
 
-#include "./gestion_des_donnees_d_eleve/gestion_eleve.h"
-#include "./gestion_promo/gestion_promo.h"
+#include "gestion_ecole/gestion_ecole.h"
+//#include "./gestion_des_donnees_d_eleve/gestion_eleve.h"
+//#include "./gestion_promo/gestion_promo.h"
 
 /*pour compiler et executer directement le programme :
 gcc main.c fonction_de_gestion/fonctions.c gestion_de_notes/notes.c gestion_promo/gestion_promo.c gestion_des_donnees_d_eleve/gestion_eleve.c  -o prog  && clear && ./prog */

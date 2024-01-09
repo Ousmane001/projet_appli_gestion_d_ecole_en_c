@@ -247,13 +247,16 @@ void virer_un_etudiant(type_promo* promo, char* infos_eleve){
 }
 //-------------------------------------------------------------------------------------------------------
 void afficher_les_infos_de_la_promo(type_promo* promo){
+  unsigned int compteur_eleve = 0;
+  maillon_eleve* temp_ptr = promo->liste_des_eleves;
+  
   printf("\n\n Informations concernant la promo : %s \n",promo->intitule_de_promo);
   printf("il ya %d eleves/etudiants en %s\n",promo->nombre_d_etudiants,promo->intitule_de_promo);
 
-  unsigned int compteur_eleve = 0;
-  maillon_eleve* temp_ptr = promo->liste_des_eleves;
+  
   for(compteur_eleve = 0; compteur_eleve < promo->nombre_d_etudiants; compteur_eleve++){
     afficher_un_eleve(temp_ptr->eleve_x);
     temp_ptr = temp_ptr->eleve_suivant;
   }
+  return;
 }

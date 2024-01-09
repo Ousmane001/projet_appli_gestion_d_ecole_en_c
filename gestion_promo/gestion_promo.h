@@ -25,7 +25,7 @@ unsigned int nombre_d_etudiants;
 
 /*prototype des fonctions concernant une promo */
 type_promo* creat_intituler_promo(void);
-void dissoudre_une_promo(maillon_eleve** liste_eleves);
+void dissoudre_une_promo(type_promo* promo); ///  <---
 void saisir_intituler_promo(type_promo* promo);
 void initialiser_nb_etudiant_promo(type_promo* promo);
 maillon_eleve* creer_maillon_eleve(type_promo* promo, char *nom_de_l_ecole);

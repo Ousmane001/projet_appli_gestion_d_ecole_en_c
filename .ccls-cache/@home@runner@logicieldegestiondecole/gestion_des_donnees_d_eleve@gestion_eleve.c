@@ -20,9 +20,11 @@ void afficher_un_eleve(eleve* eleve_x){
   printf("\n\n------------------------------------------\n");
   printf("Nom : %s\n", eleve_x->nom);
   printf("Prénom : %s\n", eleve_x->prenom);
-  printf("Email : %s\n", eleve_x->email);
+  printf("Email perso : %s\n", eleve_x->email);
   printf("Âge : %d\n", eleve_x->age);
   printf("Numéro de téléphone : %d\n", eleve_x->num_telephone);
+  printf("Email scolaire : %s\n", eleve_x->email_scolaire);
+  printf("Numero matricule : %s\n", eleve_x->matricule);
   printf("------------------------------------------\n");
 }
 
