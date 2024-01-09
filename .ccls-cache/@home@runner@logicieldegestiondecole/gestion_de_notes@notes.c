@@ -44,3 +44,21 @@ void initialiser_les_notes(t_note* note){
     (note->notes_eleve)[compteur_note] = NOTE_VIDE;
   }
 }
+
+/*--------------------------------------------------------------------------------------*/
+
+void supprimer_note_eleve(t_note* note){
+  unsigned int compteur_matiere;
+
+  /*/for(compteur_matiere = 0; compteur_matiere < (*note)->nb_matiere_pour_eleve; compteur_matiere++)
+    {
+      free(((*note)->intitule_des_matieres)[compteur_matiere]);
+    }
+  free((*note)->intitule_des_matieres);
+  free((*note)->dates_des_eval);
+  free((*note)->coefficients);*/
+  free(note);
+  printf("note supprimee avec succes\n");
+}
+
+/*--------------------------------------------------------------------------------------*/

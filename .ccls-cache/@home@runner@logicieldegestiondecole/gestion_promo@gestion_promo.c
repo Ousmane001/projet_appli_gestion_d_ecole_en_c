@@ -13,8 +13,26 @@ void initialiser_nb_etudiant_promo(type_promo* promo){
   promo->nombre_d_etudiants = AUCUN_ETUDIANT_INSCRIT;
 }
 /*-----------------------------------------------------------------------------------------------------*/
-maillon_eleve* creer_maillon_eleve(void){
-  return (maillon_eleve*)malloc(sizeof(maillon_eleve));
+maillon_eleve* creer_maillon_eleve(type_promo* promo, char *nom_de_l_ecole){
+  maillon_eleve* nouveau_maillon = (maillon_eleve*)malloc(sizeof(maillon_eleve));
+
+  // saisie des informations de l'etudiant contenue dans le maillon :
+  nouveau_maillon->eleve_x = definir_un_eleve();
+  nouveau_maillon->eleve_suivant = NULL;
+  saisir_info_eleve(nouveau_maillon->eleve_x);
+
+  // informations  complementaires ajoutees automatiquement:
+  ajout_automatique_du_matricule_eleve(nouveau_maillon->eleve_x, promo);
+  creation_automatique_email_eleve(nouveau_maillon->eleve_x, promo, nom_de_l_ecole);
+
+  return nouveau_maillon;
+}
+/*-----------------------------------------------------------------------------------------------------*/
+void supprimer_un_maillon_eleve(maillon_eleve* maillon_eleve_a_supprimer){
+  supprimer_note_eleve((maillon_eleve_a_supprimer->eleve_x->note));
+  supprimer_info_eleve((maillon_eleve_a_supprimer->eleve_x));
+  free(maillon_eleve_a_supprimer);
+  printf("maillon supprimee avec sucees\n");
 }
 /*-----------------------------------------------------------------------------------------------------*/
 void inscrire_un_etudiant(type_promo* promo,maillon_eleve** liste_eleves, maillon_eleve* nouvel_eleve){
@@ -130,6 +148,112 @@ void creation_automatique_email_eleve(eleve* eleve_x, type_promo* promo_x, char*
 }
 /*-----------------------------------------------------------------------------------------------------*/
 
-void rechercher_un_etudiant(maillon_eleve** liste_eleves);
-void virer_un_etudiant(maillon_eleve** liste_eleves);
-void afficher_les_infos_de_la_promo(maillon_eleve* liste_eleves);
+eleve* rechercher_un_etudiant(maillon_eleve** liste_eleves, char* info_eleve){
+  maillon_eleve* temp_ptr = *liste_eleves;
+
+  if((*liste_eleves == NULL) || (info_eleve == NULL)){
+    printf("Erreur : argument de la fonction rechercher_un_etudiant est NULL");
+    return NULL;
+  }
+  else{
+    while(temp_ptr != NULL){
+      if(strcmp(temp_ptr->eleve_x->matricule, info_eleve) == ELEVE_TROUVE){
+        return  temp_ptr->eleve_x;
+      }
+      else if (strcmp(temp_ptr->eleve_x->nom, info_eleve) == ELEVE_TROUVE){
+        return  temp_ptr->eleve_x;
+      }
+      else if (strcmp(temp_ptr->eleve_x->prenom, info_eleve) == ELEVE_TROUVE){
+        return  temp_ptr->eleve_x;
+      }
+      else if (strcmp(temp_ptr->eleve_x->email_scolaire, info_eleve) == ELEVE_TROUVE){
+        return  temp_ptr->eleve_x;
+      }
+      else if (strcmp(temp_ptr->eleve_x->email, info_eleve) == ELEVE_TROUVE){
+        return  temp_ptr->eleve_x;
+      }
+      else{
+        temp_ptr = temp_ptr->eleve_suivant;
+      }
+    }
+    // si aucun eleve ne correspond a l'argument de la fonction, on retourne NULL
+    return NULL;
+  }
+  
+}
+
+/*-----------------------------------------------------------------------------------------------------*/
+
+void virer_un_etudiant(type_promo* promo, char* infos_eleve){
+  maillon_eleve* temp_ptr = promo->liste_des_eleves;
+  eleve* eleve_a_supprimer = rechercher_un_etudiant(&(promo->liste_des_eleves), infos_eleve);
+
+  if((promo->liste_des_eleves == NULL) || (infos_eleve == NULL)){
+    printf("Erreur : argument de la fonction virer_un_etudiant est NULL");
+    return;
+  }
+  else if( eleve_a_supprimer == NULL){
+    // si l'eleve n'est pas dans la liste :
+    printf("Nous n'avons trouve aucun eleve correspondant a -> ' %s ' \n",infos_eleve);
+  }
+  else{
+    // si l'eleve est dans la liste : on le supprime de la liste :
+    promo->nombre_d_etudiants--;
+    // si l'eleve est le premier de la liste :
+    if(temp_ptr->eleve_x == eleve_a_supprimer){
+      // si l'eleve est le seul de la liste :
+      if(temp_ptr->eleve_suivant == NULL){
+        supprimer_un_maillon_eleve(promo->liste_des_eleves);
+        promo->liste_des_eleves = NULL;
+        printf("vous avez supprimé le seul eleve de la liste\n");
+        printf("promo vide ! \n");
+        return;
+      }
+      else{
+        // si l'eleve est le premier de la liste mais qu'il y a au moins un autre
+        
+        promo->liste_des_eleves = temp_ptr->eleve_suivant;
+        supprimer_un_maillon_eleve(temp_ptr);
+        printf("vous avez supprimé le premier eleve de la liste\n");
+        return;
+      }
+      
+    }
+    else{
+      // si l'eleve n'est pas le premier de la liste :
+      // on parcourt la liste jusqu'au maillon precedent l'eleve a supprimer :
+      while(temp_ptr->eleve_suivant->eleve_x != eleve_a_supprimer){
+        temp_ptr = temp_ptr->eleve_suivant;
+      }
+      // on supprime le maillon de l'eleve a supprimer :
+      // si l'eleve est le dernier de la liste :
+      if(temp_ptr->eleve_suivant->eleve_suivant == NULL){
+        supprimer_un_maillon_eleve(temp_ptr->eleve_suivant);
+        temp_ptr->eleve_suivant = NULL;
+        printf("dernier eleve de la liste supprimee\n");
+        return;
+      }
+      else{
+        // si l'eleve n'est pas le dernier de la liste :
+        // ici on doit sauvegarder le maillon suivant l'eleve a supprimer :
+        temp_ptr->eleve_suivant = temp_ptr->eleve_suivant->eleve_suivant;
+        printf("l'eleve a ete supprime\n");
+        return;
+      }
+    }
+  }
+
+  return;
+}
+//-------------------------------------------------------------------------------------------------------
+void afficher_les_infos_de_la_promo(type_promo* promo){
+  printf("\n\n Informations concernant la promo : %s \n",promo->intitule_de_promo);
+  printf("il ya %d eleves/etudiants en %s\n",promo->nombre_d_etudiants,promo->intitule_de_promo);
+
+  unsigned int compteur_eleve = 0;
+  maillon_eleve* temp_ptr = promo->liste_des_eleves;
+  for(compteur_eleve = 0; compteur_eleve < promo->nombre_d_etudiants; compteur_eleve++){
+    afficher_un_eleve(temp_ptr->eleve_x);
+    temp_ptr = temp_ptr->eleve_suivant;
+  }
+}

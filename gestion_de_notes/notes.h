@@ -36,6 +36,7 @@ type_date* creer_une_date(void);
 void saisir_une_date(type_date* date_a_saisir);
 void saisir_une_note(float* note, char* matiere, type_date* date_deval);
 void initialiser_les_notes(t_note* note);
+void supprimer_note_eleve(t_note* note);
 
 
 #endif

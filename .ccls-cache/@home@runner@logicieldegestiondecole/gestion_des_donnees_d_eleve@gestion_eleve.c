@@ -25,3 +25,18 @@ void afficher_un_eleve(eleve* eleve_x){
   printf("Numéro de téléphone : %d\n", eleve_x->num_telephone);
   printf("------------------------------------------\n");
 }
+
+/*------------------------------------------------------------------------*/
+
+void supprimer_info_eleve(eleve* eleve_x){
+  // attention il faut supprimer les notes de l'eleve avant : car sinon il y aura des erreurs  de segmentation !
+  /*free((eleve_x)->email);
+  free((eleve_x)->nom);
+  free((eleve_x)->prenom);
+  free((eleve_x)->matricule);
+  free((eleve_x)->email_scolaire);*/
+  free((eleve_x));
+  printf("eleve supprimee avec succes\n");
+}
+
+/*------------------------------------------------------------------------*/

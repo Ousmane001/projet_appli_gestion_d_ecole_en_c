@@ -26,5 +26,6 @@ struct t_note* note;
 eleve* definir_un_eleve(void);
 void saisir_info_eleve(eleve* eleve_x);
 void afficher_un_eleve(eleve* eleve_x);
+void supprimer_info_eleve(eleve* eleve_x);
 
 #endif
