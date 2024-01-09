@@ -14,11 +14,11 @@ int main(void) {
   type_promo* ma_promo = creat_intituler_promo();
   saisir_intituler_promo(ma_promo);
 
-  inscrire_un_etudiant(ma_promo, &(ma_promo->liste_des_eleves),creer_maillon_eleve(ma_promo, "uvsq"));
+  inscrire_un_etudiant(ma_promo, creer_maillon_eleve(ma_promo, "uvsq"));
 
   
 
-  inscrire_un_etudiant(ma_promo, &(ma_promo->liste_des_eleves),creer_maillon_eleve(ma_promo, "uvsq"));
+  inscrire_un_etudiant(ma_promo, creer_maillon_eleve(ma_promo, "uvsq"));
  
 
  

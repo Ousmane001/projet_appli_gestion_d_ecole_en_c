@@ -35,24 +35,24 @@ void supprimer_un_maillon_eleve(maillon_eleve* maillon_eleve_a_supprimer){
   printf("maillon supprimee avec sucees\n");
 }
 /*-----------------------------------------------------------------------------------------------------*/
-void inscrire_un_etudiant(type_promo* promo,maillon_eleve** liste_eleves, maillon_eleve* nouvel_eleve){
-  maillon_eleve* temp_ptr = *liste_eleves;
-  maillon_eleve* ptr_briseur = *liste_eleves;
+void inscrire_un_etudiant(type_promo* promo, maillon_eleve* nouvel_eleve){
+  maillon_eleve* temp_ptr = promo->liste_des_eleves;
+  maillon_eleve* ptr_briseur = promo->liste_des_eleves;
 
     // on incremente avant tout le nombre d'etudiant de la promo 
     promo->nombre_d_etudiants++;
   
     // si la liste est vide : 
-    if(*liste_eleves == NULL){
+    if(promo->liste_des_eleves == NULL){
       //ajouter_contact_fin(liste_eleves);
-      *liste_eleves = nouvel_eleve;
+      promo->liste_des_eleves = nouvel_eleve;
       nouvel_eleve->eleve_suivant = NULL;
     }else if (temp_ptr->eleve_suivant == NULL){
       // s'il n'y a qu'un seul contact enregistré
-      if(temp_ptr == *liste_eleves){
+      if(temp_ptr == promo->liste_des_eleves){
         // si le nouveau contact est superieur par ordre alphabetique :
         if(strcmp(nouvel_eleve->eleve_x->nom, temp_ptr->eleve_x->nom) <= 0){
-          *liste_eleves = nouvel_eleve;
+          promo->liste_des_eleves = nouvel_eleve;
           nouvel_eleve->eleve_suivant = temp_ptr;
         }
         else{
@@ -79,10 +79,10 @@ void inscrire_un_etudiant(type_promo* promo,maillon_eleve** liste_eleves, maillo
     else{
       // on va parcourir maillon par maillon jusqu'à trouver un endroit ou s'inserer
       while(temp_ptr->eleve_suivant != NULL){
-      if((temp_ptr == *liste_eleves) && (strcmp(nouvel_eleve->eleve_x->nom, temp_ptr->eleve_x->nom) <= 0)){
+      if((temp_ptr == promo->liste_des_eleves) && (strcmp(nouvel_eleve->eleve_x->nom, temp_ptr->eleve_x->nom) <= 0)){
         // le premier maillon se decale au profit du nouveau 
-        nouvel_eleve->eleve_suivant = *liste_eleves;
-        *liste_eleves = nouvel_eleve;
+        nouvel_eleve->eleve_suivant = promo->liste_des_eleves;
+        promo->liste_des_eleves = nouvel_eleve;
         printf("l'inversion sest fais ici 0");
         return;
       }

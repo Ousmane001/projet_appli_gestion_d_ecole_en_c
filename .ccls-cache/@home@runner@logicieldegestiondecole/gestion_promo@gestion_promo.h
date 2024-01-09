@@ -30,7 +30,7 @@ void saisir_intituler_promo(type_promo* promo);
 void initialiser_nb_etudiant_promo(type_promo* promo);
 maillon_eleve* creer_maillon_eleve(type_promo* promo, char *nom_de_l_ecole);
 void supprimer_un_maillon_eleve(maillon_eleve* maillon_eleve_a_supprimer);
-void inscrire_un_etudiant(type_promo* promo,maillon_eleve** liste_eleves, maillon_eleve* nouvel_eleve);
+void inscrire_un_etudiant(type_promo* promo, maillon_eleve* nouvel_eleve);
 eleve* rechercher_un_etudiant(maillon_eleve** liste_eleves, char* info_eleve);
 void virer_un_etudiant(type_promo* promo, char* infos_eleve);
 void afficher_les_infos_de_la_promo(type_promo* promo);
