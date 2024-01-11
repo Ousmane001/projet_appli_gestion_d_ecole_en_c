@@ -24,6 +24,8 @@ maillon_eleve* creer_maillon_eleve(type_promo* promo, char *nom_de_l_ecole){
   // informations  complementaires ajoutees automatiquement:
   ajout_automatique_du_matricule_eleve(nouveau_maillon->eleve_x, promo);
   creation_automatique_email_eleve(nouveau_maillon->eleve_x, promo, nom_de_l_ecole);
+  nouveau_maillon->eleve_x->note = creation_des_notes_pour_eleve();
+  nouveau_maillon->eleve_x->note->notes_eleve = (float*)malloc(promo->nb_note_pour_chaque_matiere * sizeof(float));
 
   return nouveau_maillon;
 }
@@ -247,16 +249,131 @@ void virer_un_etudiant(type_promo* promo, char* infos_eleve){
 }
 //-------------------------------------------------------------------------------------------------------
 void afficher_les_infos_de_la_promo(type_promo* promo){
-  unsigned int compteur_eleve = 0;
+  unsigned int compteur_eleve = 0,compteur_matiere;
   maillon_eleve* temp_ptr = promo->liste_des_eleves;
   
   printf("\n\n Informations concernant la promo : %s \n",promo->intitule_de_promo);
-  printf("il ya %d eleves/etudiants en %s\n",promo->nombre_d_etudiants,promo->intitule_de_promo);
+  printf("il ya %d eleves ou etudiants en %s\n",promo->nombre_d_etudiants,promo->intitule_de_promo);
 
-  
-  for(compteur_eleve = 0; compteur_eleve < promo->nombre_d_etudiants; compteur_eleve++){
+  printf("En %s, il ya %d matieres enseignees. Ce sont : \n",promo->intitule_de_promo,promo->nb_matiere);
+  for(compteur_matiere = 0; compteur_matiere < promo->nb_matiere; compteur_matiere++){
+    printf("%s  avec coefficient --> %d \n",promo->intitule_des_matieres[compteur_matiere],promo->coefficients[compteur_matiere]);
+  }
+  printf("\nA noter que chaque matiere compte %d evaluation(s) au cours du semestre\n",promo->nb_note_pour_chaque_matiere);
+
+  /*for(compteur_eleve = 0; compteur_eleve < promo->nombre_d_etudiants; compteur_eleve++){
     afficher_un_eleve(temp_ptr->eleve_x);
     temp_ptr = temp_ptr->eleve_suivant;
+  }*/
+  return;
+}
+//-------------------------------------------------------------------------------------------------------
+void saisir_notation_promo(type_promo* promo){
+  unsigned int compteur_matiere;
+  printf("Information concernant le systeme de notation de la promo : %s \n",promo->intitule_de_promo);
+  promo->nb_matiere = saisir_entier("combien de matieres sont enseignees dans cette promo ? --> ");
+  promo->nb_note_pour_chaque_matiere = saisir_entier("Combien de notes prevoyez-vous pour chaque matiere ? --> ");
+  
+  // allocation dynamique de la memoire pour les notes des matieres :
+  
+  promo->intitule_des_matieres = (char**)malloc(sizeof(char*)*promo->nb_matiere);
+  promo->coefficients = (unsigned int*)malloc(sizeof(unsigned int)*promo->nb_matiere);
+  promo->dates_des_eval = (type_date*)malloc(sizeof(type_date)*promo->nb_note_pour_chaque_matiere);
+  promo->nb_eval_passee = (unsigned int*)malloc(sizeof(unsigned int)*promo->nb_note_pour_chaque_matiere);
+  // saisie des intitules des matieres :
+  for(compteur_matiere = AUCUNE; compteur_matiere < promo->nb_matiere; compteur_matiere++){
+    promo->intitule_des_matieres[compteur_matiere] = saisir_chaine("saisissez l'intitulee d'une matiere de la promo :");
+    promo->coefficients[compteur_matiere] = saisir_entier("tapez le coefficient de la matiere : ");
+    promo->nb_eval_passee[compteur_matiere] =  AUCUNE;
+  }
+}
+//-------------------------------------------------------------------------------------------------------
+void reporter_note_promo(type_promo* promo, type_date* date_eval){
+  maillon_eleve* maillon_eleve_courant = NULL;
+  char* matiere_a_reporter;
+  unsigned int compteur_matiere, erreur;
+
+  // saisie de la matiere a reporter :
+  do{
+    erreur = OUI;
+    matiere_a_reporter = saisir_chaine("saisissez l'intitule de la matiere a reporter : ");
+    for(compteur_matiere = AUCUNE; compteur_matiere < promo->nb_matiere; compteur_matiere++){
+      if(strcmp(matiere_a_reporter, promo->intitule_des_matieres[compteur_matiere]) == CORRESPOND){
+        erreur = AUCUNE;
+        break;
+      }
+    }
+  }while(erreur != AUCUNE);
+
+
+  if(promo->nombre_d_etudiants){
+    maillon_eleve_courant = (maillon_eleve*)malloc(sizeof(maillon_eleve));
+    maillon_eleve_courant = promo->liste_des_eleves;
+    promo->dates_des_eval[promo->nb_eval_passee[compteur_matiere]] = *date_eval;
+    
+    printf("Promo %s \n",promo->intitule_de_promo);
+    printf("Report des notes %s au cours de l'evaluation %d/%d/%d \n",matiere_a_reporter,date_eval->jour,date_eval->mois,date_eval->annee);
+    printf("/!\ ATTENTION : si l'eleve est abscent avec justification, tapez 100 si c'est non justifiee donnez lui 200 \n\n");
+    
+    while(maillon_eleve_courant != NULL){
+      printf("Note de %s %s : \n",maillon_eleve_courant->eleve_x->prenom,maillon_eleve_courant->eleve_x->nom);
+      maillon_eleve_courant->eleve_x->note->notes_eleve[promo->nb_eval_passee[compteur_matiere]] = saisir_float("saisissez sa note (ex: 14.5) : ");
+      maillon_eleve_courant = maillon_eleve_courant->eleve_suivant;
+    }
+    promo->nb_eval_passee[compteur_matiere]++;
+  }
+  else{
+    printf("Il n'y a aucun eleve dans la promo ! \n");
+    printf("vous pouvrez pas saisir des notes pour des eleves fantomes ! \n");
+  }
+}
+//-------------------------------------------------------------------------------------------------------
+void afficher_les_notes_de_la_promo(type_promo* promo){
+  maillon_eleve* maillon_eleve_courant = NULL;
+  char* matiere_a_reporter;
+  unsigned int compteur_matiere, erreur,compteur_eval_passe;
+  type_date* date_a_afficher = creer_une_date();
+
+  // saisie de la matiere dont les notes sont a affichées : 
+  do{
+    erreur = OUI;
+    matiere_a_reporter = saisir_chaine("saisissez l'intitule de la matiere dont les notes sont a affichees : ");
+    for(compteur_matiere = AUCUNE; compteur_matiere < promo->nb_matiere; compteur_matiere++){
+      if(strcmp(matiere_a_reporter, promo->intitule_des_matieres[compteur_matiere]) == CORRESPOND){
+        erreur = AUCUNE;
+        break;
+      }
+    }
+  }while(erreur != AUCUNE);
+
+  // saisie de la date de l'evalutation dont les notes sont a affichées :
+  do{
+    erreur = OUI;
+    saisir_une_date(date_a_afficher);
+    for(compteur_eval_passe = AUCUNE; compteur_eval_passe < promo->nb_eval_passee[compteur_matiere]; compteur_eval_passe++){
+      // si la date correspond bien a un jour ou il ya eu une eval :
+      if((date_a_afficher->jour == promo->dates_des_eval[compteur_eval_passe].jour) && (date_a_afficher->mois == promo->dates_des_eval[compteur_eval_passe].mois) ){
+        erreur = AUCUNE;
+        break;
+      }
+    }
+  }while(erreur != AUCUNE);
+
+  // affichages des notes :
+  if(promo->nombre_d_etudiants){
+    maillon_eleve_courant = (maillon_eleve*)malloc(sizeof(maillon_eleve));
+    maillon_eleve_courant = promo->liste_des_eleves;
+    printf("Promo %s \n",promo->intitule_de_promo);
+    printf("Notes %s au cours de l'evaluation %d/%d/%d \n",matiere_a_reporter,date_a_afficher->jour,date_a_afficher->mois,date_a_afficher->annee);
+    while(maillon_eleve_courant != NULL){
+      printf("Note de %s %s :  %.2f \n",maillon_eleve_courant->eleve_x->prenom,maillon_eleve_courant->eleve_x->nom,maillon_eleve_courant->eleve_x->note->notes_eleve[compteur_eval_passe]);
+      maillon_eleve_courant = maillon_eleve_courant->eleve_suivant;
+    }
+  }
+  else{
+    printf("Il n'y a aucun eleve dans la promo ! \n");
+    printf("vous pouvrez pas saisir des notes pour des eleves fantomes ! \n");
   }
   return;
 }
+//-------------------------------------------------------------------------------------------------------

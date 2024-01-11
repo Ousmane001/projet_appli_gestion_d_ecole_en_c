@@ -7,6 +7,10 @@
 
 #define AUCUN_ETUDIANT_INSCRIT 0
 #define ELEVE_TROUVE 0
+#define OUI 1
+#define CORRESPOND 0
+#define AUCUNE 0
+
 
 
 /*------------------declaration d'un type liste_d'élèves-----------------------*/
@@ -17,9 +21,17 @@ typedef struct maillon_eleve{
 
 /*------------------declaration d'un type promo-----------------------*/
 typedef struct type_promo{
-unsigned int nombre_d_etudiants;
+
   char* intitule_de_promo;
+  unsigned int nombre_d_etudiants;
   maillon_eleve* liste_des_eleves;
+
+  unsigned int nb_matiere;
+  unsigned int nb_note_pour_chaque_matiere;
+  char** intitule_des_matieres;
+  unsigned int* coefficients;
+  type_date* dates_des_eval;
+  unsigned int* nb_eval_passee;
 }type_promo;
 
 
@@ -36,5 +48,8 @@ void virer_un_etudiant(type_promo* promo, char* infos_eleve);
 void afficher_les_infos_de_la_promo(type_promo* promo);
 void ajout_automatique_du_matricule_eleve(eleve* eleve_x, type_promo* promo_x);
 void creation_automatique_email_eleve(eleve* eleve_x, type_promo* promo_x, char* nom_de_l_ecole);
+void saisir_notation_promo(type_promo* promo);
+void reporter_note_promo(type_promo* promo, type_date* date_eval);
+void afficher_les_notes_de_la_promo(type_promo* promo);
 
 #endif

@@ -21,12 +21,10 @@ typedef struct{
 }type_date;
 /*------------------declaration d'un type note-----------------------*/
 typedef struct t_note{
-  unsigned int nb_matiere_pour_eleve;
-  unsigned int nb_note_pour_chaque_matiere;
-  char** intitule_des_matieres;
-  unsigned int* coefficients;
+  
   float* notes_eleve;
-  type_date* dates_des_eval;
+  
+
 }t_note;
 
 

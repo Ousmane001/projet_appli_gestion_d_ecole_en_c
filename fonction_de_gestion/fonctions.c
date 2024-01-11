@@ -9,7 +9,7 @@ char* saisir_chaine(char* question){
   
   do{
   printf("%s", question);
-  scanf("%s",chaine);
+  scanf("%s", chaine);
   }while(strlen(chaine)>MAX_SIZE);
   
   return chaine;

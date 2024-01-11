@@ -14,11 +14,11 @@ void saisir_une_date(type_date* date_a_saisir){
     printf("Erreur :  date non allouee \n");
     exit(EXIT_FAILURE);
   }
-  // saisie du jour de l'eval
+  // saisie du jour :
   do{
-    date_a_saisir->jour = saisir_entier("saisissez le jour ou a eu lieu l'evaluation : ");
+    date_a_saisir->jour = saisir_entier("saisissez le jour : ");
   }while(date_a_saisir->jour > DERNIER_JOUR_DU_MOIS || date_a_saisir->jour < PREMIER_JOUR_DU_MOIS);
-  // saisie du mois de l'eval
+  // saisie du mois :
   do{
     date_a_saisir->mois = saisir_entier("saisissez le mois correspondant : ");
   }while((date_a_saisir->mois < JANVIER) || (date_a_saisir->mois > DECEMBRE) || (date_a_saisir->mois > MOIS_FIN_DES_COURS && date_a_saisir->mois < MOIS_DEBUT_DES_COURS));
@@ -33,7 +33,7 @@ void saisir_une_note(float* note, char* matiere, type_date* date_deval){
   return;
 }
 /*--------------------------------------------------------------------------------------*/
-void initialiser_les_notes(t_note* note){
+/*void initialiser_les_notes(t_note* note){
   int compteur_note;
   
   if(note == NULL){
@@ -43,7 +43,7 @@ void initialiser_les_notes(t_note* note){
   for(compteur_note = 0; compteur_note < note->nb_matiere_pour_eleve; compteur_note++){
     (note->notes_eleve)[compteur_note] = NOTE_VIDE;
   }
-}
+}*/
 
 /*--------------------------------------------------------------------------------------*/
 
