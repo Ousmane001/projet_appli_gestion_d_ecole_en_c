@@ -29,5 +29,4 @@ void afficher_un_eleve(eleve* eleve_x);
 void supprimer_info_eleve(eleve* eleve_x);
 
 
-
 #endif

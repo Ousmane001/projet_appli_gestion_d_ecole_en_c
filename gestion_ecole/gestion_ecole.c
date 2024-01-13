@@ -1,19 +1,21 @@
 #include "gestion_ecole.h"
 
+
 /*-------------------------------------------------------------------------------------------*/
 type_ecole* creer_saisir_info_ecole(void){
   type_ecole* ecole = (type_ecole*)malloc(sizeof(type_ecole));
 
   // saisie des infos de l'ecole :
+  printf("**************** Bienvenue dans l'espace de creation de votre Ecole ****************\n\n");
   ecole->nom_ecole = saisir_chaine("Quelle est le nom de l'ecole : ");
   ecole->nb_niveaux = ECOLE_VIDE;
   ecole->debut_cours = creer_une_date();
   ecole->fin_cours = creer_une_date();
   ecole->liste_niveaux = NULL;
-  printf("Informations concernants le debut des cours à %s : \n",ecole->nom_ecole);
+  printf("\n\nInformations concernants le debut des cours à %s : \n",ecole->nom_ecole);
   saisir_une_date(ecole->debut_cours);
   ecole->debut_cours->annee = saisir_entier("Pour finir, saisissez l'annee scolaire (ex: 2023) : ");
-  printf("Informations concernants la fin prevu des cours à %s : \n",ecole->nom_ecole);
+  printf("\n\nInformations concernants la fin prevu des cours à %s : \n",ecole->nom_ecole);
   saisir_une_date(ecole->fin_cours);
   ecole->fin_cours->annee = ecole->debut_cours->annee + ANNEE_SUIVANTE;
   return ecole;

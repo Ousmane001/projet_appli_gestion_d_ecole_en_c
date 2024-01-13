@@ -4,7 +4,7 @@
 #include "../gestion_des_niveaux/niveau.h"
 
 #define ECOLE_VIDE 0
-#define ANNEE_SUIVANTE 1
+#define ANNEE_SUIVANTE 1 
  // structure d'un maillon niveau d'études :
 
 typedef struct maillon_niveau{
