@@ -6,22 +6,22 @@
 //cette bib n'est pas à inclure /!\  #include "../gestion_promo/gestion_promo.h"
 
 #define NB_MAX_CONCATENTION 5
-#define NB_MAX_TAILLE_MATRICULE 50
-#define NB_MAX_TAILLE_EMAIL_ETU 50
+#define NB_MAX_TAILLE_MATRICULE 10
+#define NB_MAX_TAILLE_EMAIL_ETU 30
 
 /*------------------un type eleve-----------------------*/
 typedef struct eleve{
 
-char* nom;
-char* prenom;
-char* email;
-char* matricule;
-char* email_scolaire;
-//char matricule[NB_MAX_TAILLE_MATRICULE];
-//char email_scolaire[NB_MAX_TAILLE_EMAIL_ETU];
-unsigned int age;
-unsigned int num_telephone;
-struct t_note* note;
+    char* nom;
+    char* prenom;
+    char* email;
+    char* matricule;
+    char* email_scolaire;
+    //char matricule[NB_MAX_TAILLE_MATRICULE];
+    //char email_scolaire[NB_MAX_TAILLE_EMAIL_ETU];
+    int age;
+    int num_telephone;
+    struct t_note* note;
 }eleve;
 
 /*----------------------prototype-------------------------*/

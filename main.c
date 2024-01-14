@@ -134,8 +134,9 @@ int main(void) {
             maillon_eleve_courant = creer_maillon_eleve(promo_a_rechercher,ecole->nom_ecole);
             
             inscrire_un_etudiant(promo_a_rechercher,maillon_eleve_courant);
-            ajout_automatique_du_matricule_eleve(maillon_eleve_courant->eleve_x,promo_a_rechercher);
             creation_automatique_email_eleve(maillon_eleve_courant->eleve_x,promo_a_rechercher,ecole->nom_ecole);
+            printf("%s\n",maillon_eleve_courant->eleve_x->email_scolaire);
+            ajout_automatique_du_matricule_eleve(maillon_eleve_courant->eleve_x,promo_a_rechercher);
             printf("\n\n\n Eleve inscrit avec succes\n\n");
             afficher_un_eleve(maillon_eleve_courant->eleve_x);
             attendre_utilisateur();

@@ -122,31 +122,25 @@ void inscrire_un_etudiant(type_promo* promo, maillon_eleve* nouvel_eleve){
 }
 /*------------------------------------------------------------------------*/
 void ajout_automatique_du_matricule_eleve(eleve* eleve_x, type_promo* promo_x){
-  maillon_eleve* temp_ptr = promo_x->liste_des_eleves;
-  eleve_x->matricule = (char*)malloc(sizeof(char)*NB_MAX_TAILLE_MATRICULE);
+  eleve_x->matricule = (char*)malloc(NB_MAX_TAILLE_MATRICULE*sizeof(char));
+  eleve_x->matricule[0] = '\0';  // Initialisation à une chaîne vide
 
-  if(promo_x->liste_des_eleves != NULL){
-  while(temp_ptr->eleve_suivant != NULL){
-    temp_ptr = temp_ptr->eleve_suivant;
-  }
-  }
-  //eleve_x->matricule = "";
-  // temp_ptr pointe sur le maillon de l'eleve dont on veut attribuer un matricule:
-  // je vais donc concatener les 4 premiers caractere comme matricule suivi de ...
-  strncat(eleve_x->matricule, promo_x->intitule_de_promo,NB_MAX_CONCATENTION);
-  snprintf((eleve_x->matricule+strlen(eleve_x->matricule)), sizeof(eleve_x->matricule)-strlen(eleve_x->matricule), "%05d", promo_x->nombre_d_etudiants);
+  // Concaténation des premiers caractères du matricule
+  strcat(eleve_x->matricule, promo_x->intitule_de_promo);
+
+  // Ajout du nombre d'étudiants formaté à quatre chiffres
+  snprintf(eleve_x->matricule + strlen(eleve_x->matricule), NB_MAX_TAILLE_MATRICULE - strlen(eleve_x->matricule), "%04d", promo_x->nombre_d_etudiants);
 }
+
   
 
 /*-----------------------------------------------------------------------------------------------------*/
 void creation_automatique_email_eleve(eleve* eleve_x, type_promo* promo_x, char* nom_de_l_ecole){
   eleve_x->email_scolaire = (char*)malloc(sizeof(char)*NB_MAX_TAILLE_EMAIL_ETU);
-  //eleve_x->email_scolaire = "";
-
+  eleve_x->email_scolaire[0] = '\0';
   // copier d'une partie du prénom et de la totalité du nom dans l'email scolaire
   strncat(eleve_x->email_scolaire, eleve_x->prenom, 1);
   strcat(eleve_x->email_scolaire, ".");
-  //eleve_x->email_scolaire[strlen(eleve_x->email_scolaire)] = '.';
   strcat(eleve_x->email_scolaire, eleve_x->nom);
   // concatener le nom de l'ecole
   strcat(eleve_x->email_scolaire, "@");

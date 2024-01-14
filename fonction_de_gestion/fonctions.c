@@ -15,7 +15,7 @@ char* saisir_chaine(char* question){
   return chaine;
 }
 /*-----------------------------------------------------------------------------*/
-unsigned int saisir_entier(char* question){
+int saisir_entier(char* question){
   unsigned int nombre;
   
   do{
