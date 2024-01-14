@@ -92,39 +92,114 @@ int creer_un_dossier(char* nom_dossier){
   return system(nom_concatenee);
 }
 /*-----------------------------------------------------------------------------------------*/
+int acceder_a_repetoire(char* repertoire){
+  char nom_concatenee[TAILLE_MAX];
+
+  snprintf(nom_concatenee,TAILLE_MAX,"cd %s",repertoire);
+  return system(nom_concatenee);
+}
+/*-----------------------------------------------------------------------------------------*/
 int sauvergarder_donnees(type_ecole* ecole){
   FILE* fichier_ecole = NULL;
   char chaine_concatenation[TAILLE_MAX] = "";
-  char compteur_niveau = 0;
+  int compteur_niveau = 0,compeur_promo,compteur_matiere,compteur_date,compteur_eleve;
   char num_niveau[TAILLE_CONCAT] = "";
   maillon_niveau* niveau_x = (maillon_niveau*) malloc(sizeof(maillon_niveau));
+  maillon_promo* promo_X = (maillon_promo*)malloc(sizeof(maillon_promo));
+  maillon_eleve* eleve_x = (maillon_eleve*)malloc(sizeof(maillon_eleve));
 
-  // creation d'un nouveau repertoire de base_de_donnee:
-  creer_un_dossier(ecole->nom_ecole);
+  // creation d'un nouveau repertoire de base_de_donnee portant le nom de l'ecole :
+  mkdir(ecole->nom_ecole);
   strcat(chaine_concatenation,ecole->nom_ecole);
   strcat(chaine_concatenation,nom_fichier_ecole);
   // sauvegarde des infos de l'ecole
   fichier_ecole = fopen(chaine_concatenation,"w");
     fprintf(fichier_ecole,"%s \n%d %d %d \n%d %d %d \n%d \n",ecole->nom_ecole,ecole->debut_cours->jour,ecole->debut_cours->mois,ecole->debut_cours->annee,ecole->fin_cours->jour,ecole->fin_cours->mois,ecole->fin_cours->annee,ecole->nb_niveaux);
+    niveau_x = ecole->liste_niveaux;
+    for(compteur_niveau = ECOLE_VIDE; compteur_niveau < ecole->nb_niveaux; compteur_niveau++){
+      fprintf(fichier_ecole,"%d ",niveau_x->niveau_x->niveau_d_etude);
+      niveau_x = niveau_x->niveau_suivant;
+    }
+
     
   fclose(fichier_ecole);
-
+  // on accede au dossier portant le nom de notre ecole : 
+  chdir(ecole->nom_ecole);
   // sauvegarde des infos des niveau :
   niveau_x = ecole->liste_niveaux;
   for(compteur_niveau = ECOLE_VIDE; compteur_niveau < ecole->nb_niveaux; compteur_niveau++){
+
     // on remet a 0 notre chaine de concatenation :
     memset(chaine_concatenation,CHAINE_VIDE,sizeof(chaine_concatenation));
-    // on concatene l'addresse du repertoire de sauvegarde :
-    strcat(chaine_concatenation,ecole->nom_ecole);
     strcat(chaine_concatenation,niveau_concat);
     // on ajoute le numero du niveau correspondant :
     sprintf(num_niveau,"%d",niveau_x->niveau_x->niveau_d_etude);
-    strcat(chaine_concatenation,num_niveau);printf("\n\t%s\n",chaine_concatenation);
-    creer_un_dossier(chaine_concatenation);
+    strcat(chaine_concatenation,num_niveau);
+    printf("\t%s\n",chaine_concatenation);
+    mkdir(chaine_concatenation);
+
+    // on accede au dossier qu'on vient de creer :
+    chdir(chaine_concatenation);
+
+    // on cree un fichier contenant les infos du niveau :
+    fichier_ecole = fopen(NOM_DOC_NIVEAU,"w");
+      fprintf(fichier_ecole,"%d %d\n",niveau_x->niveau_x->nb_promo,niveau_x->niveau_x->niveau_d_etude);
+      promo_X = niveau_x->niveau_x->liste_promo;
+      for(compeur_promo = PROMO_VIDE; compeur_promo < niveau_x->niveau_x->nb_promo; compeur_promo++){
+        fprintf(fichier_ecole,"%s ",promo_X->promo_x->intitule_de_promo);
+        promo_X = promo_X->promo_suivant;
+      }
+    fclose(fichier_ecole);
+
+    // on cree un dossier pour chaque promo :
+    promo_X = niveau_x->niveau_x->liste_promo;
+    for(compeur_promo = PROMO_VIDE; compeur_promo < niveau_x->niveau_x->nb_promo; compeur_promo++){
+      mkdir(promo_X->promo_x->intitule_de_promo);
+
+      // on accede au dossier promo qu'on vient de creer :
+        chdir(promo_X->promo_x->intitule_de_promo);
+
+        fichier_ecole = fopen(NOM_DOC_PROMO,"w");
+        fprintf(fichier_ecole,"%d %d %d\n",promo_X->promo_x->nombre_d_etudiants,promo_X->promo_x->nb_matiere,promo_X->promo_x->nb_note_pour_chaque_matiere);
+
+        for(compteur_matiere = AUCUNE; compteur_matiere < promo_X->promo_x->nb_matiere; compteur_matiere++){
+          fprintf(fichier_ecole,"%s %d %d\n",promo_X->promo_x->intitule_des_matieres[compteur_matiere],promo_X->promo_x->coefficients[compteur_matiere],promo_X->promo_x->nb_eval_passee[compteur_matiere]);
+          
+          /*for(compteur_date = AUCUNE; compteur_date < promo_X->promo_x->nb_eval_passee[compteur_matiere]; compteur_date++){
+            fprintf(fichier_ecole,"")
+          }*/
+
+        }
+        
+        fclose(fichier_ecole);
+        // on stocke les infos de tous les eleves dans un fichier:
+        eleve_x = promo_X->promo_x->liste_des_eleves;
+        fichier_ecole = fopen(NOM_DOC_ELEVES,"w");
+          for(compteur_eleve = PROMO_VIDE; compteur_eleve < promo_X->promo_x->nombre_d_etudiants; compteur_eleve++){
+            fprintf(fichier_ecole,"%s %s %s ",eleve_x->eleve_x->nom,eleve_x->eleve_x->prenom,eleve_x->eleve_x->email);
+            fprintf(fichier_ecole,"%d %d ",eleve_x->eleve_x->age,eleve_x->eleve_x->num_telephone);
+            fprintf(fichier_ecole,"%s %s\n",eleve_x->eleve_x->matricule,eleve_x->eleve_x->email_scolaire);
+            eleve_x = eleve_x->eleve_suivant;
+          }
     
+        fclose(fichier_ecole);
+        // on sort du dossier promo :
+        chdir("..");
+
+      promo_X = promo_X->promo_suivant;
+    }
+    // on sort du dossier :
+    chdir("..");
     niveau_x = niveau_x->niveau_suivant;
 
   }
+
+  // on sort du dossier portant le nom de notre ecole :
+  chdir("..");
+  free(niveau_x);
+  free(promo_X);
+  free(eleve_x);
+
 
   return SAUVEGARDER;
 

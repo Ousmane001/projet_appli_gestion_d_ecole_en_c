@@ -14,7 +14,7 @@ gestion_promo/gestion_promo.c gestion_des_donnees_d_eleve/gestion_eleve.c main.c
 -o prog   */
 
 int main(void) {
-
+  
   maillon_eleve* maillon_eleve_courant = NULL;
   int menu_courant = MENU_PRINCIPALE;
   int choix = OUI;

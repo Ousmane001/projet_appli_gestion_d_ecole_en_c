@@ -24,8 +24,10 @@
   #define SUPP_BASE_DE_DONNEE "rm -r base_de_donnee"
   #define BASE_DE_DONNEE "base_de_donnee"
   #define nom_fichier_ecole "/ecole.save"
-  #define niveau_concat "/niveau_"
-
+  #define niveau_concat "niveau_"
+  #define NOM_DOC_NIVEAU "info_niveau.data"
+  #define NOM_DOC_PROMO "info_promo.data"
+  #define NOM_DOC_ELEVES "info_eleves.data"
 
   void afficher_un_nom_en_gras(char *nom);
   void afficher_menu_principale(type_ecole* ecole);
@@ -37,5 +39,6 @@
   int recup_choix_utilisateur(void);
   int creer_un_dossier(char* nom_dossier);
   int sauvergarder_donnees(type_ecole* ecole);
+  int acceder_a_repetoire(char* repertoire);
 
 #endif
