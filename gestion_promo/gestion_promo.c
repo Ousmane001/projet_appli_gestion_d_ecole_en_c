@@ -123,6 +123,7 @@ void inscrire_un_etudiant(type_promo* promo, maillon_eleve* nouvel_eleve){
 /*------------------------------------------------------------------------*/
 void ajout_automatique_du_matricule_eleve(eleve* eleve_x, type_promo* promo_x){
   maillon_eleve* temp_ptr = promo_x->liste_des_eleves;
+  eleve_x->matricule = (char*)malloc(sizeof(char)*NB_MAX_TAILLE_MATRICULE);
 
   if(promo_x->liste_des_eleves != NULL){
   while(temp_ptr->eleve_suivant != NULL){
@@ -139,6 +140,9 @@ void ajout_automatique_du_matricule_eleve(eleve* eleve_x, type_promo* promo_x){
 
 /*-----------------------------------------------------------------------------------------------------*/
 void creation_automatique_email_eleve(eleve* eleve_x, type_promo* promo_x, char* nom_de_l_ecole){
+  eleve_x->email_scolaire = (char*)malloc(sizeof(char)*NB_MAX_TAILLE_EMAIL_ETU);
+  //eleve_x->email_scolaire = "";
+
   // copier d'une partie du prénom et de la totalité du nom dans l'email scolaire
   strncat(eleve_x->email_scolaire, eleve_x->prenom, 1);
   strcat(eleve_x->email_scolaire, ".");

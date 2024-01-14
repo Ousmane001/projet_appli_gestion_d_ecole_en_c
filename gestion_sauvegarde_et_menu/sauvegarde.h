@@ -17,7 +17,14 @@
   #define AJOUTER 2
   #define RECHERCHER 3
   #define SUPPRIMER 4
-  #define TAILLE_MAX 50
+  #define SAUVEGARDER 8
+  #define TAILLE_MAX 75
+  #define TAILLE_CONCAT 10
+  #define CHAINE_VIDE 0
+  #define SUPP_BASE_DE_DONNEE "rm -r base_de_donnee"
+  #define BASE_DE_DONNEE "base_de_donnee"
+  #define nom_fichier_ecole "/ecole.save"
+  #define niveau_concat "/niveau_"
 
 
   void afficher_un_nom_en_gras(char *nom);
@@ -29,5 +36,6 @@
   void attendre_utilisateur(void);
   int recup_choix_utilisateur(void);
   int creer_un_dossier(char* nom_dossier);
+  int sauvergarder_donnees(type_ecole* ecole);
 
 #endif

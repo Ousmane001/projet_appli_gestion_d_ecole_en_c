@@ -1,7 +1,7 @@
 #include "gestion_eleve.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define MAX_SIZE 50
+
 /*------------------------------------------------------------------------*/
 eleve* definir_un_eleve(void){
   return (eleve*)malloc(sizeof(eleve));

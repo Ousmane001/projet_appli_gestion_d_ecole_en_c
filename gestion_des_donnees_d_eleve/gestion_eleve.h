@@ -15,8 +15,10 @@ typedef struct eleve{
 char* nom;
 char* prenom;
 char* email;
-char matricule[NB_MAX_TAILLE_MATRICULE];
-char email_scolaire[NB_MAX_TAILLE_EMAIL_ETU];
+char* matricule;
+char* email_scolaire;
+//char matricule[NB_MAX_TAILLE_MATRICULE];
+//char email_scolaire[NB_MAX_TAILLE_EMAIL_ETU];
 unsigned int age;
 unsigned int num_telephone;
 struct t_note* note;

@@ -15,14 +15,15 @@ gestion_promo/gestion_promo.c gestion_des_donnees_d_eleve/gestion_eleve.c main.c
 
 int main(void) {
 
+  maillon_eleve* maillon_eleve_courant = NULL;
   int menu_courant = MENU_PRINCIPALE;
   int choix = OUI;
   maillon_niveau* niveau_a_rechercher = creer_maillon_niveau(NULL);
   type_promo* promo_a_rechercher = creat_intituler_promo();
-  maillon_eleve* maillon_eleve_courant = NULL;
   eleve* eleve_a_rechercher = definir_un_eleve();
   
   type_ecole *ecole = creer_saisir_info_ecole(); 
+  
   afficher_menu_principale(ecole);
   do{
     
@@ -163,7 +164,8 @@ int main(void) {
     
   }while( (choix != QUITTER));
 
-
+  sauvergarder_donnees(ecole);
+  attendre_utilisateur();
   
   printf("\nbien execute\n");
   

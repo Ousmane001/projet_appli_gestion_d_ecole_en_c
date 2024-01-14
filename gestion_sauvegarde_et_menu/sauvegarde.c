@@ -87,6 +87,45 @@ int creer_un_dossier(char* nom_dossier){
   char nom_concatenee[TAILLE_MAX];
 
   snprintf(nom_concatenee,TAILLE_MAX,"mkdir %s",nom_dossier);
+  printf("%s \n",nom_concatenee);
 
   return system(nom_concatenee);
+}
+/*-----------------------------------------------------------------------------------------*/
+int sauvergarder_donnees(type_ecole* ecole){
+  FILE* fichier_ecole = NULL;
+  char chaine_concatenation[TAILLE_MAX] = "";
+  char compteur_niveau = 0;
+  char num_niveau[TAILLE_CONCAT] = "";
+  maillon_niveau* niveau_x = (maillon_niveau*) malloc(sizeof(maillon_niveau));
+
+  // creation d'un nouveau repertoire de base_de_donnee:
+  creer_un_dossier(ecole->nom_ecole);
+  strcat(chaine_concatenation,ecole->nom_ecole);
+  strcat(chaine_concatenation,nom_fichier_ecole);
+  // sauvegarde des infos de l'ecole
+  fichier_ecole = fopen(chaine_concatenation,"w");
+    fprintf(fichier_ecole,"%s \n%d %d %d \n%d %d %d \n%d \n",ecole->nom_ecole,ecole->debut_cours->jour,ecole->debut_cours->mois,ecole->debut_cours->annee,ecole->fin_cours->jour,ecole->fin_cours->mois,ecole->fin_cours->annee,ecole->nb_niveaux);
+    
+  fclose(fichier_ecole);
+
+  // sauvegarde des infos des niveau :
+  niveau_x = ecole->liste_niveaux;
+  for(compteur_niveau = ECOLE_VIDE; compteur_niveau < ecole->nb_niveaux; compteur_niveau++){
+    // on remet a 0 notre chaine de concatenation :
+    memset(chaine_concatenation,CHAINE_VIDE,sizeof(chaine_concatenation));
+    // on concatene l'addresse du repertoire de sauvegarde :
+    strcat(chaine_concatenation,ecole->nom_ecole);
+    strcat(chaine_concatenation,niveau_concat);
+    // on ajoute le numero du niveau correspondant :
+    sprintf(num_niveau,"%d",niveau_x->niveau_x->niveau_d_etude);
+    strcat(chaine_concatenation,num_niveau);printf("\n\t%s\n",chaine_concatenation);
+    creer_un_dossier(chaine_concatenation);
+    
+    niveau_x = niveau_x->niveau_suivant;
+
+  }
+
+  return SAUVEGARDER;
+
 }
