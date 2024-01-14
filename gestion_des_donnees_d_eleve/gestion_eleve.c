@@ -8,21 +8,21 @@ eleve* definir_un_eleve(void){
 }
 /*------------------------------------------------------------------------*/
 void saisir_info_eleve(eleve* eleve_x) {
-  eleve_x->nom = saisir_chaine("Entrez le nom de l'élève : ");
-  eleve_x->prenom = saisir_chaine("saisissez son prénom : ");
-  eleve_x->email = saisir_chaine("Entrez l'email de l'élève : ");
-  eleve_x->age = saisir_entier("Entrez l'âge de l'élève : ");
-  eleve_x->num_telephone = saisir_entier("Entrez le numéro de téléphone de l'élève : ");
+  eleve_x->nom = saisir_chaine("Entrez le nom de l'eleve : ");
+  eleve_x->prenom = saisir_chaine("saisissez son prenom : ");
+  eleve_x->email = saisir_chaine("Entrez l'email personnel de l'eleve : ");
+  eleve_x->age = saisir_entier("Entrez son age : ");
+  eleve_x->num_telephone = saisir_entier("Entrez le numero de telephone de l'eleve : ");
 }
 
 /*------------------------------------------------------------------------*/
 void afficher_un_eleve(eleve* eleve_x){
   printf("\n\n------------------------------------------\n");
   printf("Nom : %s\n", eleve_x->nom);
-  printf("Prénom : %s\n", eleve_x->prenom);
+  printf("Prenom : %s\n", eleve_x->prenom);
   printf("Email perso : %s\n", eleve_x->email);
-  printf("Âge : %d\n", eleve_x->age);
-  printf("Numéro de téléphone : %d\n", eleve_x->num_telephone);
+  printf("Age : %d\n", (int)eleve_x->age);
+  printf("Numero de telephone : %d\n", (int)eleve_x->num_telephone);
   printf("Email scolaire : %s\n", eleve_x->email_scolaire);
   printf("Numero matricule : %s\n", eleve_x->matricule);
   printf("------------------------------------------\n");

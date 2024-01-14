@@ -22,10 +22,10 @@ maillon_eleve* creer_maillon_eleve(type_promo* promo, char *nom_de_l_ecole){
   saisir_info_eleve(nouveau_maillon->eleve_x);
 
   // informations  complementaires ajoutees automatiquement:
-  ajout_automatique_du_matricule_eleve(nouveau_maillon->eleve_x, promo);
-  creation_automatique_email_eleve(nouveau_maillon->eleve_x, promo, nom_de_l_ecole);
+  
+  //creation_automatique_email_eleve(nouveau_maillon->eleve_x, promo, nom_de_l_ecole);
   nouveau_maillon->eleve_x->note = creation_des_notes_pour_eleve();
-  nouveau_maillon->eleve_x->note->notes_eleve = (float*)malloc(promo->nb_note_pour_chaque_matiere * sizeof(float));
+  nouveau_maillon->eleve_x->note->notes_eleve = (float*)malloc(promo->nb_note_pour_chaque_matiere * (sizeof(float)));
 
   return nouveau_maillon;
 }
@@ -41,18 +41,23 @@ void inscrire_un_etudiant(type_promo* promo, maillon_eleve* nouvel_eleve){
   maillon_eleve* temp_ptr = promo->liste_des_eleves;
   maillon_eleve* ptr_briseur = promo->liste_des_eleves;
 
+  if((promo == NULL) || (nouvel_eleve == NULL)){
+    printf("Erreur : argument incorrecte dans inscrire_un_etudiant \n");
+    return;
+  }
     // on incremente avant tout le nombre d'etudiant de la promo 
     promo->nombre_d_etudiants++;
-  
+    printf("nb_etudiant = %d\n",promo->nombre_d_etudiants);
     // si la liste est vide : 
     if(promo->liste_des_eleves == NULL){
-      //ajouter_contact_fin(liste_eleves);
       promo->liste_des_eleves = nouvel_eleve;
       nouvel_eleve->eleve_suivant = NULL;
+      printf("eleve ajoutee en tete de liste\n");
+      return;
     }else if (temp_ptr->eleve_suivant == NULL){
-      // s'il n'y a qu'un seul contact enregistré
+      // s'il n'y a qu'un seul eleve enregistré
       if(temp_ptr == promo->liste_des_eleves){
-        // si le nouveau contact est superieur par ordre alphabetique :
+        // si le nouveau eleve est superieur par ordre alphabetique :
         if(strcmp(nouvel_eleve->eleve_x->nom, temp_ptr->eleve_x->nom) <= 0){
           promo->liste_des_eleves = nouvel_eleve;
           nouvel_eleve->eleve_suivant = temp_ptr;
@@ -124,10 +129,11 @@ void ajout_automatique_du_matricule_eleve(eleve* eleve_x, type_promo* promo_x){
     temp_ptr = temp_ptr->eleve_suivant;
   }
   }
+  //eleve_x->matricule = "";
   // temp_ptr pointe sur le maillon de l'eleve dont on veut attribuer un matricule:
   // je vais donc concatener les 4 premiers caractere comme matricule suivi de ...
   strncat(eleve_x->matricule, promo_x->intitule_de_promo,NB_MAX_CONCATENTION);
-  snprintf(eleve_x->matricule + strlen(eleve_x->matricule), sizeof(eleve_x->matricule)-strlen(eleve_x->matricule), "%05d", promo_x->nombre_d_etudiants);
+  snprintf((eleve_x->matricule+strlen(eleve_x->matricule)), sizeof(eleve_x->matricule)-strlen(eleve_x->matricule), "%05d", promo_x->nombre_d_etudiants);
 }
   
 
@@ -253,7 +259,7 @@ void afficher_les_infos_de_la_promo(type_promo* promo){
   maillon_eleve* temp_ptr = promo->liste_des_eleves;
   
   printf("\n\n Informations concernant la promo : %s \n",promo->intitule_de_promo);
-  printf("il ya %d eleves ou etudiants en %s\n",promo->nombre_d_etudiants,promo->intitule_de_promo);
+  printf("il ya %d eleves ou etudiants en %s\n",(int)promo->nombre_d_etudiants,promo->intitule_de_promo);
 
   printf("En %s, il ya %d matieres enseignees. Ce sont : \n",promo->intitule_de_promo,promo->nb_matiere);
   for(compteur_matiere = 0; compteur_matiere < promo->nb_matiere; compteur_matiere++){
@@ -286,6 +292,8 @@ void saisir_notation_promo(type_promo* promo){
     promo->coefficients[compteur_matiere] = saisir_entier("tapez le coefficient de la matiere : ");
     promo->nb_eval_passee[compteur_matiere] =  AUCUNE;
   }
+  printf("\n\nPromo %s ajoutee avec succes !\n\n",promo->intitule_de_promo);
+  return;
 }
 //-------------------------------------------------------------------------------------------------------
 void reporter_note_promo(type_promo* promo, type_date* date_eval){
@@ -313,7 +321,7 @@ void reporter_note_promo(type_promo* promo, type_date* date_eval){
     
     printf("Promo %s \n",promo->intitule_de_promo);
     printf("Report des notes %s au cours de l'evaluation %d/%d/%d \n",matiere_a_reporter,date_eval->jour,date_eval->mois,date_eval->annee);
-    printf("/!\ ATTENTION : si l'eleve est abscent avec justification, tapez 100 si c'est non justifiee donnez lui 200 \n\n");
+    printf("ATTENTION : si l'eleve est abscent avec justification, tapez 100 si c'est non justifiee donnez lui 200 \n\n");
     
     while(maillon_eleve_courant != NULL){
       printf("Note de %s %s : \n",maillon_eleve_courant->eleve_x->prenom,maillon_eleve_courant->eleve_x->nom);

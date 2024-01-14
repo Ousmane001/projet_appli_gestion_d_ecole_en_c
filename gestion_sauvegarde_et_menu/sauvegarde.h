@@ -2,7 +2,7 @@
 #define SAUVEGARDE_H
 
   #include "../gestion_ecole/gestion_ecole.h"
-  #include <sys/wait.h>
+  //#include <sys/wait.h>
 
   #define TAILLE_CONCATENATION 15
   #define MENU_PRINCIPALE 0
@@ -17,6 +17,7 @@
   #define AJOUTER 2
   #define RECHERCHER 3
   #define SUPPRIMER 4
+  #define TAILLE_MAX 50
 
 
   void afficher_un_nom_en_gras(char *nom);
@@ -25,5 +26,8 @@
   void afficher_menu_gestion_ecole(type_ecole* ecole);
   void afficher_menu_gestion_niveau(type_ecole* ecole);
   void afficher_menu_gestion_promo(type_ecole* ecole);
+  void attendre_utilisateur(void);
+  int recup_choix_utilisateur(void);
+  int creer_un_dossier(char* nom_dossier);
 
 #endif

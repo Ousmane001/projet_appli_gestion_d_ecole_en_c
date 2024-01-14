@@ -38,20 +38,29 @@ void afficher_info_niveau(type_niveau* niveau){
   return;
 }
 /*------------------------------------------------------------------------------------*/
-void ajouter_une_promo(type_niveau* niveau, type_promo* nouvelle_promo){
-  maillon_promo* nouveau_maillon;
+maillon_promo* creer_maillon_promo(void){
+  maillon_promo* nouvel_promo = (maillon_promo*)malloc(sizeof(maillon_promo));
+  nouvel_promo->promo_x = creat_intituler_promo();
+  saisir_intituler_promo(nouvel_promo->promo_x);
+  saisir_notation_promo(nouvel_promo->promo_x);
+  initialiser_nb_etudiant_promo(nouvel_promo->promo_x);
+  nouvel_promo->promo_x->liste_des_eleves = NULL;
   
-  if((niveau == NULL) || (nouvelle_promo == NULL)) {
+  return nouvel_promo;
+}
+/*------------------------------------------------------------------------------------*/
+void ajouter_une_promo(type_niveau* niveau, maillon_promo* nouveau_maillon){
+  
+  
+  if((niveau == NULL) || (nouveau_maillon == NULL)) {
     printf("niveau inexistant dans ajouter_une_promo\n");
     return;
   }
   else{
-    nouveau_maillon = (maillon_promo*)malloc(sizeof(maillon_promo));
-    nouveau_maillon->promo_x = nouvelle_promo;
-    saisir_notation_promo(nouvelle_promo);
-    niveau->nb_promo++; 
     
-    if(niveau->nb_promo == 0){
+    
+    
+    if(niveau->nb_promo == PROMO_VIDE){
       niveau->liste_promo = nouveau_maillon;
       nouveau_maillon->promo_suivant = NULL;
     }
@@ -59,6 +68,7 @@ void ajouter_une_promo(type_niveau* niveau, type_promo* nouvelle_promo){
       nouveau_maillon->promo_suivant = niveau->liste_promo;
       niveau->liste_promo = nouveau_maillon;
     }
+    niveau->nb_promo++; 
     return;
   }
   

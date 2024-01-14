@@ -6,8 +6,8 @@
 //cette bib n'est pas à inclure /!\  #include "../gestion_promo/gestion_promo.h"
 
 #define NB_MAX_CONCATENTION 5
-#define NB_MAX_TAILLE_MATRICULE 10
-#define NB_MAX_TAILLE_EMAIL_ETU 20
+#define NB_MAX_TAILLE_MATRICULE 50
+#define NB_MAX_TAILLE_EMAIL_ETU 50
 
 /*------------------un type eleve-----------------------*/
 typedef struct eleve{

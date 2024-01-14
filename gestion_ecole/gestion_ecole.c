@@ -102,9 +102,12 @@ maillon_niveau* rechercher_un_niveau(type_ecole* ecole, unsigned int niveau){
 void supprimer_un_niveau_detude(type_ecole* ecole, maillon_niveau* niveau_a_supp){
   maillon_niveau* courant = NULL;
 
-  if((ecole == NULL) || (niveau_a_supp == NULL)){
+  if(ecole == NULL){
     printf("erreur argument invalide dans supprimer_un_niveau_detude\n");
     return;
+  }
+  else if(niveau_a_supp == NULL){
+    printf("Nous ne pouvons pas supprimer ce niveau d'etude car il n'existe pas : \n\n");
   }
   else{
     courant = (maillon_niveau*)malloc(sizeof(maillon_niveau));

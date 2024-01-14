@@ -1,8 +1,22 @@
 #include "sauvegarde.h"
 
 
+/*-----------------------------------------------------------------------*/
+void attendre_utilisateur(void){
+  // on vide d'abord le tampon stdin :
+  fflush(stdin);
+  printf("\n\n\nTapez un caractere quelconque pour continuer : ");
+  getchar();
+  return;
+}
+/*-----------------------------------------------------------------------*/
+  int recup_choix_utilisateur(void){
+    int choix;
 
-
+    choix = saisir_entier("\n\n\n Faites votre choix en tapant le numero associe a votre requete : ");
+    printf("\n\n\n");
+    return choix;
+  }
 /*-----------------------------------------------------------------------*/
 void afficher_menu_principale(type_ecole* ecole){
 
@@ -69,3 +83,10 @@ void afficher_menu_gestion_promo(type_ecole* ecole){
   }
 }
 /*-----------------------------------------------------------------------------------------*/
+int creer_un_dossier(char* nom_dossier){
+  char nom_concatenee[TAILLE_MAX];
+
+  snprintf(nom_concatenee,TAILLE_MAX,"mkdir %s",nom_dossier);
+
+  return system(nom_concatenee);
+}
