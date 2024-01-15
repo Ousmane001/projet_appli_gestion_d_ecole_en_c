@@ -17,16 +17,24 @@
   #define AJOUTER 2
   #define RECHERCHER 3
   #define SUPPRIMER 4
+  #define AFFICHER_ELEVE 5
+  #define REPORTER 6
+  #define AFFICHER_NOTE 7
   #define SAUVEGARDER 8
   #define TAILLE_MAX 75
   #define TAILLE_CONCAT 10
   #define CHAINE_VIDE 0
   #define SUPP_BASE_DE_DONNEE "rm -r base_de_donnee"
-  #define BASE_DE_DONNEE "base_de_donnee"
+  #define BASE_DE_DONNEE "base_de_donnees"
   #define nom_fichier_ecole "/ecole.save"
   #define niveau_concat "niveau_"
+  #define NOM_DOC_ECOLE "ecole.save"
   #define NOM_DOC_NIVEAU "info_niveau.data"
   #define NOM_DOC_PROMO "info_promo.data"
+  #define NOM_DOC_SAUVEGARDE "sauvegarde.data"
+  #define ECHEC_CHARGEMENT -1
+  #define CHARGEMENT_SUCCES 0
+  
   #define NOM_DOC_ELEVES "info_eleves.data"
 
   void afficher_un_nom_en_gras(char *nom);
@@ -39,6 +47,6 @@
   int recup_choix_utilisateur(void);
   int creer_un_dossier(char* nom_dossier);
   int sauvergarder_donnees(type_ecole* ecole);
-  int acceder_a_repetoire(char* repertoire);
+  int charger_une_sauvegarde(type_ecole* ecole);
 
 #endif

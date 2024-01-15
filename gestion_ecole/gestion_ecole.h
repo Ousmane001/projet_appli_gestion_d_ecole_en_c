@@ -17,7 +17,7 @@ typedef struct maillon_niveau{
 
 typedef struct{
   char* nom_ecole;
-  unsigned int nb_niveaux;
+  int nb_niveaux;
   type_date* debut_cours;
   type_date* fin_cours;
   maillon_niveau* liste_niveaux;

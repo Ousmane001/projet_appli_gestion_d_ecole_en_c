@@ -15,8 +15,8 @@ typedef struct maillon_promo{
 
 typedef struct{
 
-unsigned int nb_promo;
-unsigned int niveau_d_etude;
+int nb_promo;
+int niveau_d_etude;
 maillon_promo* liste_promo;
 
 }type_niveau;

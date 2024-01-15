@@ -21,8 +21,17 @@ int main(void) {
   maillon_niveau* niveau_a_rechercher = creer_maillon_niveau(NULL);
   type_promo* promo_a_rechercher = creat_intituler_promo();
   eleve* eleve_a_rechercher = definir_un_eleve();
+  type_date* date_eval = creer_une_date();
   
-  type_ecole *ecole = creer_saisir_info_ecole(); 
+  type_ecole* ecole = (type_ecole*)malloc(sizeof(type_ecole));
+  if(charger_une_sauvegarde(ecole) == CHARGEMENT_SUCCES){
+    printf("ecole chargee avec succes\n");
+  }
+  else{
+    printf("erreur chargement ecole\n");
+  }
+  attendre_utilisateur();
+  //type_ecole *ecole = creer_saisir_info_ecole(); 
   
   afficher_menu_principale(ecole);
   do{
@@ -152,7 +161,25 @@ int main(void) {
             promo_a_rechercher = rechercher_promo(niveau_a_rechercher->niveau_x, saisir_chaine("saisissez l'intitule de la promo de l'etudiant a virer : "))->promo_x;
             virer_un_etudiant(promo_a_rechercher,saisir_chaine("saisissez le matricule, nom ou prenom de l'eleve a virer : "));
             break;
-
+          case AFFICHER_ELEVE:
+            niveau_a_rechercher = rechercher_un_niveau(ecole, saisir_entier("\nsaisissez le niveau d'etude dans lequel se trouve la promo de l'etudiant : "));
+            promo_a_rechercher = rechercher_promo(niveau_a_rechercher->niveau_x, saisir_chaine("saisissez l'intitule de la promo de l'etudiant a afficher : "))->promo_x;
+            eleve_a_rechercher = rechercher_un_etudiant(&(promo_a_rechercher->liste_des_eleves),saisir_chaine("saisissez une information concernant cet eleve (nom, prenom ou email ...) : "));
+            afficher_un_eleve(eleve_a_rechercher);
+            break;
+          case REPORTER:
+            niveau_a_rechercher = rechercher_un_niveau(ecole, saisir_entier("\nsaisissez le niveau d'etude dans lequel se trouve la promo ou on doit saisir des notes : "));
+            promo_a_rechercher = rechercher_promo(niveau_a_rechercher->niveau_x, saisir_chaine("saisissez l'intitule de la promo qui a ete evaluee : "))->promo_x;
+            printf("\n\nSaisie de la date d'evalutaion : \n");
+            saisir_une_date(date_eval);
+            reporter_note_promo(promo_a_rechercher,date_eval);
+            printf("\\n Notes saisies avec succes ! \n\n");
+            break;
+          case AFFICHER_NOTE:
+            niveau_a_rechercher = rechercher_un_niveau(ecole, saisir_entier("\nsaisissez le niveau d'etude dans lequel se trouve la promo ou on doit afficher les notes : "));
+            promo_a_rechercher = rechercher_promo(niveau_a_rechercher->niveau_x, saisir_chaine("saisissez l'intitule de la promo : "))->promo_x;
+            afficher_les_notes_de_la_promo(promo_a_rechercher);
+            break;
           default:
             break;
         }

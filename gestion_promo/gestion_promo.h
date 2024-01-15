@@ -23,15 +23,15 @@ typedef struct maillon_eleve{
 typedef struct type_promo{
 
   char* intitule_de_promo;
-  unsigned int nombre_d_etudiants;
+  int nombre_d_etudiants;
   maillon_eleve* liste_des_eleves;
 
-  unsigned int nb_matiere;
-  unsigned int nb_note_pour_chaque_matiere;
+  int nb_matiere;
+  int nb_note_pour_chaque_matiere;
   char** intitule_des_matieres;
-  unsigned int* coefficients;
+  int* coefficients;
   type_date* dates_des_eval;
-  unsigned int* nb_eval_passee;
+  int* nb_eval_passee;
 }type_promo;
 
 
